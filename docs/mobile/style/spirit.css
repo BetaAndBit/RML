@@ -1,0 +1,190 @@
+.lyric{
+	width:190px;
+	height:70px;
+	position:absolute;
+	right:55px;
+	bottom:280px;
+	background:rgba(0,0,0,0.6);
+	border-radius:10px;
+	color:#ffffff;
+	padding:10px;
+	font-size:15px;
+	text-align:center;
+	overflow:hidden;
+}
+
+.lyric .lyrics{
+	width:100%;
+	left:0;
+	top:0;
+	position:relative;
+	-webkit-animation: 0.1s ease-in-out;
+	animation: 0.1s ease-in-out;
+}
+.lyric .on{
+  font-weight: bold;
+  color: #36a3e1;
+}
+.lyric li{
+	list-style:none;
+	line-height:20px;
+}
+.lyric .arrow{
+	border-width:6px 8px 6px 8px;
+	border-style:solid;
+	border-color:rgba(0,0,0,0.6) transparent transparent transparent;
+	position:absolute;
+	left:99px;
+	top:100%;
+}
+
+.spirit{
+	width:140px;
+	height:220px;
+	position:absolute;
+	right:90px;
+	bottom:40px;
+	z-index:1000;
+}
+.spirit .person{
+	width:140px;
+	height:220px;
+	position:absolute;
+	left:0;
+	top:0;
+}
+.spirit .shadow{
+	position:absolute;
+	z-index:-1;
+	left:0;
+	right:0;
+	bottom:0;
+	margin:auto;
+}
+.Peter .shadow{
+	position:absolute;
+	z-index:-1;
+	left:-10px;
+	right:0;
+	bottom:-6px;
+	margin:auto;
+	width:90px;
+}
+.talk{
+	background-position:0 0;
+	animation:talkmove 3s infinite steps(1, end) both;
+	-webkit-animation:talkmove 3s infinite steps(1, end) both;
+}
+.stand{
+	background-position:280px 660px;
+	animation:standmove 16s infinite steps(1, end) both;
+	-webkit-animation:standmove 16s infinite steps(1, end) both;
+}
+.Alice{background:url("icon/Alice.png") no-repeat;}
+.Peter{background:url("icon/Peter.png") no-repeat;}
+@keyframes talkmove{
+	0% {
+		background-position:0 0;
+	}
+	4% {
+		background-position:-140px 0;
+	}
+	8% {
+		background-position:-280px 0;
+	}
+	16% {
+		background-position:-420px 0;
+	}
+	20% {
+		background-position:-560px 0;
+	}
+	24% {
+		background-position:-700px 0;
+	}
+	28% {
+		background-position:-840px 0;
+	}
+	32% {
+		background-position:-980px 0;
+	}
+	36% {
+		background-position:0 -220px;
+	}
+	40% {
+		background-position:-140px -220px;
+	}
+	44% {
+		background-position:-280px -220px;
+	}
+	48% {
+		background-position:-420px -220px;
+	}
+	52% {
+		background-position:-560px -220px;
+	}
+	56% {
+		background-position:-700px -220px;
+	}
+	60% {
+		background-position:-840px -220px;
+	}
+	64% {
+		background-position:-980px -220px;
+	}
+	68% {
+		background-position:0 -440px;
+	}
+	72% {
+		background-position:-140px -440px;
+	}
+	76% {
+		background-position:-280px -440px;
+	}
+	80% {
+		background-position:-420px -440px;
+	}
+	84% {
+		background-position:-560px -440px;
+	}
+	88% {
+		background-position:-700px -440px;
+	}
+	92% {
+		background-position:-840px -440px;
+	}
+	96% {
+		background-position:-980px -440px;
+	}
+	100% {
+		background-position:0 -660px;
+	}
+}
+@keyframes standmove{
+	0% {
+		background-position:-280px -660px;
+	}
+	12.5% {
+		background-position:-420px -660px;
+	}
+	25% {
+		background-position:-560px -660px;
+	}
+	37.5% {
+		background-position:-700px -660px;
+	}
+	50% {
+		background-position:-840px -660px;
+	}
+	62.5% {
+		background-position:-980px -660px;
+	}
+	75% {
+		background-position:0 -880px;
+	}
+	87.5% {
+		background-position:-140px -880px;
+	}
+	100% {
+		background-position:-280px -880px;
+	}
+}

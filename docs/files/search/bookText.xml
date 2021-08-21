@@ -1,0 +1,937 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Search><pages Count="52"><page Index="1" isMAC="true"><![CDATA[ ]]></page><page Index="2" isMAC="true"><![CDATA[The Hitchhiker’s Guide to Responsible Machine Learning The R version
+Authors:
+Przemysław Biecek, Anna Kozak, Aleksander Zawada
+Illustrations and cover:
+Aleksander Zawada
+Reviewer:
+Łukasz Rajkowski, PhD
+Webpage:
+https://betabit.wiki/RML
+Publisher:
+Publishing House of the Warsaw University of Technology ul. Polna 50, 00–644 Warszawa, tel. +48 22 234 70 83
+tel. +48 22 234 75 03, e-mail: oficyna@pw.edu.pl
+ISBN:
+978-83-8156-264-5 Printing & binding:
+JKB Print
+Edition I Warsaw 2021
+]]></page><page Index="3" isMAC="true"><![CDATA[All right, but how do you build predictive models in a responsible way?
+This is a question I am often asked by data scientists at different levels of experience. Seemingly simple but at the same time challen- ging because there are several orthogonal threads and perspectives of different stakeholders that shall be addressed.
+Model developers focus on automation of model training, moni- toring of model performance, debugging, and other MLOps related matters. Users of predictive models are more interested in expla- inability, transparency and security, while fairness, bias, ethics are issues of interest to society.
+In this book, when showing topics related to Responsible Machine Learning (RML), we focus on three essential elements.
+Algorithms - Often, to capture complex relationships in data, you need to use advanced and elastic machine learning algorithms. The- se, however, should not be used without understanding how they work. So a discussion about responsible modelling must touch on the topic of how complex models work.
+Software - Training of advanced models is a computationally de- manding process. The libraries that allow for efficient training are low-level engineering masterpieces. Professionals use good tools, so a story about responsible modelling must include a section related to good software.
+Process - Predictive modelling is not only about tools but also about planning, logistic, communication, deadlines and objectives. The process of data and model exploration is iterative, as in each iteration, we head towards better and better models. Knowing the tools does not help much if you do not know when and how to use them. Therefore, to talk about responsible modelling, we need to talk about the processes behind modelling.
+This book is a unique entanglement of all these aspects together at the same time. You will find here selected modern machine learning techniques and the intuition behind them. Methods are supplemen- ted by code snippets with examples in R language1. The process is shown through a comic book describing the adventures of two characters, Beta and Bit. The interaction of these two shows the de- cisions that analysts often face, whether to try a different model, try another technique for exploration or look for another data — qu- estions like: how to compare models or how to validate them.
+Model development is responsible and challenging work but al- so an exciting adventure. Sometimes textbooks focus only on the technical side, losing all the fun. Here we are going to have it all.
+Przemysław Biecek Warszawa, 2021
+1 R Core Team. R: A Language and Environment for Statistical Com- puting. R Foundation for Sta- tistical Computing, Vienna, Au- stria, 2021. URL https://www. R-project.org/
+But what is it all about?
+]]></page><page Index="4" isMAC="true"><![CDATA[ ]]></page><page Index="5" isMAC="true"><![CDATA[ ]]></page><page Index="6" isMAC="true"><![CDATA[Prelude
+6
+2 We use an example actually built on real data to predict the risk of severe Covid disease progression. But the approach presented can be applied to a very broad class of pro- blems.
+Predictive models have been used throughout entire human hi- story. Priests in ancient Egypt were predicting when the flood of the Nile or a solar eclipse would come. Developments in statistics, increasing availability of datasets, and increasing computing power allow predictive models to be built faster and deployed in a rapidly growing number of applications.
+Today, predictive models are used virtually everywhere. The plan- ning of the supply chain for a large corporation, recommending lunch or a movie for the evening, or predicting traffic jams in a city. Newspapers are full of exciting applications.
+But how are such predictive models developed?
+In the following pages, we go through a life cycle of an example predictive model2 from the concept phase, through design, training, checking, to the deployment. We present an agile approach to bu- ilding and exploring Machine Learning (ML) models, inspired by the agile approach to software development. The main principles of Agile ML are: a continuous adaptation to newly acquired knowled- ge, continuous prototyping of the solution, dynamic planning, and effective communication. The life cycle of a predictive model is sum- marized by the diagram below.
+Agile manifesto
+                         https:
+Agile_software_development
+Figure 1: Developing a predictive model often involves many itera- tions. In this book too, iteration by iteration, we build increasin- gly complex models, compare them against other, and extract useful in- formation through various Expla- natory Model Analysis (EMA) tech- niques.
+Subsequent iterations consist of exploration of literature, data and models, assembly of new solutions and validation after validation. But in addition to these steps, we also show the concept phase, in which the problem to be solved is speci- fied, and the deployment phase.
+//en.wikipedia.org/wiki/
+ Conception
+Deliver
+Assembly
+Explore
+    Evaluate
+3 Gareth James, Daniela Witten, Tre- vor Hastie, and Robert Tibshira- ni. An Introduction to Statistical Learning: with Applications in R. Springer, 2013. URL https://www. statlearning.com/
+We present the life cycle of model development and validation on an example of a binary classification model. We start with a sim- ple model derived from domain knowledge and expand it up to a fully data-driven random forest model with automatically tuned hyperparameters. The description of the methods is supplemented with code snippets that you can use to replicate all presented results yourself. It’s worth playing around with these codes to understand better how described methods work.
+Due to the limited space, the descriptions of the methods of both machine learning algorithms and explainable artificial intelligence are brief. If you want to learn more about predictive modelling, I highly recommend the book An Introduction to Statistical Learning (ISL)3. For those interested in a more detailed description of Explana- tory Model Analysis (EMA) and eXplainable Artificial Intelligence (XAI), you will find much more in the book Explanatory Model Ana-
+]]></page><page Index="7" isMAC="true"><![CDATA[7
+lysis4. Both are available in paperback but also can be read free of
+charge in electronic form.
+The modelling approach presented in this book is inspired by the
+paper Statistical modeling: the two cultures by Leo Breiman5. It pre- sents two views of modelling, one focused on building models that describe the laws of nature and the other describing models focused on the effectiveness of predicting a certain trait. As we will show in this book, a bridge can be built between these approaches. Effective models can and should be used to extract knowledge about a do- main, and such knowledge can be furthered transformed into even more effective models.
+Prelude
+4 Przemyslaw Biecek and Tomasz Burzykowski. Explanatory Model Analysis. Chapman and Hall/CRC, New York, 2021. URL https:// pbiecek.github.io/ema/
+5 Leo Breiman. Statistical modeling: the two cultures. Statistical Science, 16(3):199–231, 2001b
+Figure 2: The first part of this bo- ok is devoted to the transforma- tion of knowledge and data into a model and then into predictions. The second part of this book discus- ses how to learn from predictions how the model works and how to extract information about the do- main from the predictive model.
+   Knowledge
++ Model Prediction
+Data
+  Another interesting point made by Leo Breiman in the article men- tioned above is the Rashomon perspective for predictive modelling, i.e. situation in which several equally good models describe the sa- me phenomenon differently. In this book, we show how to examine what different models say about the data. We introduce a pyramid for model exploration that forms a language in which we can show and cross-compare stories learned by different predictive models.
+SARS-COV-2 case study
+To demonstrate what responsible predictive modelling looks like, we used data obtained from the collaboration with the Polish In- stitute of Hygiene in modelling mortality after Covid infection. We realize that data on Coronavirus disease can evoke negative feelings. However, it is a good example of how predictive modelling can di- rectly impact our society and how data analysis allows us to deal with complex, important and topical problems.
+All the results presented in this book can be independently repro- duced using the snippets and instructions presented in this book. If you do not want to retype them, then all the examples, data, and codes can be found on the webpage of this book6. Please note that the data presented at this URL is artificially generated to mirror re- lations in actual data. But it does not contain real patients data.
+The procedure outlined here is presented for mortality modelling, but the same process can be replicated whether modelling patient survival, housing pricing, or credit scoring.
+6 https://betabit.wiki/RML
+]]></page><page Index="8" isMAC="true"><![CDATA[ ]]></page><page Index="9" isMAC="true"><![CDATA[ ]]></page><page Index="10" isMAC="true"><![CDATA[Model Assembly
+10
+As you will see in a minute, we can create a model without new data.
+Hello model!
+When browsing through examples of predictive modelling, one may get the wrong impression that the life cycle of the model begins with the data from the internet and ends with validation on an indepen- dent dataset. However, this is an oversimplification.
+The life cycle of a predictive model begins with a well-defined problem. In this example, we are looking for a model that assesses the risk of death after diagnosed Covid. We don’t want to guess who will survive and who won’t. Instead, we want to construct a score that allows us to sort patients by their individual risk. Why do we need such a model? For example, those at higher risk of death co- uld be given higher protection, such as providing them with pulse oximeters or preferentially vaccinating them. For this reason, in the following sections, we introduce and use model performance me- asures that evaluate rankings of scores, such as Area Under Curve (AUC). Pick a model evaluation measure suitable for the problem posed.
+Having defined the problem we want to solve, we can move to the next step, which is to collect all the available information. Often the solution to the problem can be found in the literature, whether in the form of a ready-made feature prediction function, a discussion of what features are important, or sample data.
+If there are no ready-to-use solutions and we have to collect the data ourselves, it is always worth considering where and what data to collect in order to build the model on a representative sample7. The problem of data representativeness is a topic for a separate book. Incorrectly collected data will create biases that are hard to discover and even harder to fix.
+We think of a predictive model as a function that computes a cer- tain predictions for specific input data. Usually, such a function is built automatically based on the data. But technically, the model can be any function defined in any way.
+Our first model will be based on statistics collected by the Centers for Disease Control and Prevention (CDC)8. That’s right; sometimes, we don’t need raw data to build a predictive model. We’ll start by turning a table with mortality statistics into a model.
+7 In our study, we used data on all patients reached by the sanitary in- spectorate between Match and Au- gust 2020. It would seem that data collected in this way would be free of biases, but we were able to detect at least one. In April, the pandemic spread faster among coal mine wor- kers, who were more likely to be young men, which may have influ- enced the fluctuations in mortality.
+8 https://www.cdc.gov/
+Figure 3: Mortality statistics as pre- sented at CDC website https:// tinyurl.com/CDCmortality acces- sed on May 2021. This table shows rate ratios compared to the group 18- to 29-year-olds (selected as the reference group because it has ac- counted for the largest cumulative number of COVID-19 cases compa- red to other age groups).
+ ]]></page><page Index="11" isMAC="true"><![CDATA[11
+Model Assembly
+R snippets
+A predictive model is a function that transforms n ⇥ p data frame with p variables for n observations into a vector of n predictions. For further examples, below, we define a function that calculates odds of Covid related death based on statistics from the CDC website for different age groups9.
+__
+cdc risk <- function(x, base risk = 0.00003) {
+  rratio <- rep(7900, nrow(x))
+  rratio[which(x$Age < 84.5)] <- 2800
+  rratio[which(x$Age < 74.5)] <- 1100
+  rratio[which(x$Age < 64.5)] <- 400
+  rratio[which(x$Age < 49.5)] <- 130
+  rratio[which(x$Age < 39.5)] <- 45
+  rratio[which(x$Age < 29.5)] <- 15
+  rratio[which(x$Age < 17.5)] <- 1
+  rratio[which(x$Age < 4.5)]  <- 2
+  rratio * base_risk
+}
+steve <- data.frame(Age = 25, Diabetes = "Yes")
+cdc_risk(steve)
+## [1] 0.00045
+Predictive models may have different structures. To work respon- sibly with a large number of models, a uniform standardized inter- face is needed. In this book, we use the abstraction implemented in the DALEX package10.
+The explain function from this package creates an explainer11, i.e. a wrapper for the model that will allow you to work uniformly with objects of very different structures. The first argument is a model. It can be an object of any class. The second argument is a function that calculates the vector of predictions. DALEX package can often guess which function is needed for a specific model, but in this book, we explicitly show it to understand better how the wrapper works. The type argument specifies the model type and the label specifies an unique name that appear in the plots.
+library("DALEX")
+model_cdc <- DALEX::explain(cdc_risk,
+predict_function = function(m, x) m(x), type = "classification",
+label = "CDC")
+predict(model_cdc, steve)
+## [1] 0.00045
+Using the explain function may seem like an unnecessary com- plication at the moment, but on the following pages, we show how it simplifies the work.
+The biggest advantage of such a constructed object (explainer) is its standardized structure, to some degree independent from the internal structure of the model.
+9 There was no risk for the referen- ce group in the table 3. It is not relevant if we are only interested in the ranking of relative risks. But to make the predictions easier to in- terpret we use here the relative risk determined on Polish data, which is 0.003% for the reference group.
+10 Przemyslaw Biecek.
+Explainers for Complex Predicti- ve Models in R. Journal of Ma- chine Learning Research, 19(84):1– 5, 2018. URL https://jmlr.org/ papers/v19/18-416.html
+11 Explainer is an object/adapter that wraps a model and creates a uniform structure and interface for operations.
+DALEX:
+]]></page><page Index="12" isMAC="true"><![CDATA[ ]]></page><page Index="13" isMAC="true"><![CDATA[ ]]></page><page Index="14" isMAC="true"><![CDATA[Data Preparation and Understanding 14 Exploratory Data Analysis (EDA)
+12 Please note that the attached data are not the real data collected for epidemiological purposes, but arti- ficially generated data preserving the structure and relationships in the actual data.
+To build a model, we need good data. In Machine Learning, the word good means a large amount of representative data. Unfortuna- tely, collecting representative data is not easy nor cheap and often requires designing and conducting a specific experiment.
+The best possible scenario is that one can design and run a study to collect the necessary data. In less comfortable situations, we look for "natural experiments," i.e., data that have been collected for ano- ther purpose but that can be used to build a model. Here we will use the data12 collected through epidemiological interviews. There will be a lot of data points, and it should be rather representative, although unfortunately, it only involves symptomatic patients who are tested positive for SARS-COV-2.
+The data is divided into two sets covid_spring and covid_summer. The first is acquired in spring 2020 and will be used as training data, while the second dataset is acquired in the summer and will be used for validation. In machine learning, model validation is performed on a separate data set called validation data. This controls the risk of overfitting an elastic model to the training data. If we do not have a separate set, then it is generated using cross-validation, out- of-sample, out-of-time or similar internal data splitting techniques.
+R snippets
+The R software offers hundreds of specialized solutions for explora- tory data analysis. Certainly, many valuable solutions can be found in the book „R for Data Science”13, but there is much more. Below we show just three examples. Let’s start with loading the data.
+covid_spring <- read.table("covid_spring.csv", sep =";", header = TRUE)
+covid_summer <- read.table("covid_summer.csv", sep =";", header = TRUE)
+We use the package ggplot2 to draw a simple histogram for Age, and ggmosaic to draw a mosaic plot for Diabetes. Note that the plots in the margins are graphically edited, so they look slightly different from the plots generated by these short instructions.
+# See Figure 4
+library("ggplot2") ggplot(covid_spring) +
+     geom_histogram(aes(Age, fill = Death))
+# See Figure 5
+library("ggmosaic") ggplot(data = covid_spring) +
+geom_mosaic(aes(x=product(Diabetes), fill = Death))
+13 Hadley Wickham and Garrett Grolemund. R for Data Science: Im- port, Tidy, Transform, Visualize, and Model Data. O’Reilly Media, Inc., 2017
+  750 500 250 0
+       0 25 50 75 100 Age
+Figure 4: Histogram for the Age variable by survivor status.
+ Yes
+No
+   Figure 5: The mosaic plot shows that there are significantly fewer people with diabetes, but among them, the mortality is higher.
+No Yes Diabetes
+Death
+Count
+]]></page><page Index="15" isMAC="true"><![CDATA[15 Data Preparation and Understanding
+A handy way to summarise tabular data for groups is the so- called „Table 1”. This is a summary of the main characteristics of each variable broken down into groups defined by the variable of interest (here, binary information about Covid death). The name stems from the fact that this summary of the data is usually the first table to be shown in many epidemiological and related scientific journals.
+library("tableone")
+CreateTableOne(vars = colnames(covid_spring)[1:10],
+                         data = covid_spring,
+                         strata = "Death")
+# Stratified by Death # NoYes
+#n
+# Gender = Male (%)
+# Age (mean (SD))
+# CardiovascularDiseases = Yes (%) # Diabetes = Yes (%)
+# Neurological.Diseases = Yes (%) # Kidney.Diseases = Yes (%)
+# Cancer = Yes (%)
+# Hospitalization = Yes (%)
+# Fever = Yes (%)
+# Cough = Yes (%)
+9487           513
+4554 (48.0)    271 (52.8) 0.037
+One of the most important rules to remember when building a predictive model is: Do not condition on future! Note, that in the discussed case variables Hospitalization, Fever or Cough are not good predictors because they are not known in advance before infection. So they are not useful in our case.
+In the following lines, we remove invalid variables from both data sets.
+selected_vars <- c("Gender", "Age", "Cardiovascular.Diseases", "Diabetes", "Neurological.Diseases", "Kidney.Diseases", "Cancer", "Death")
+# use only selected variables
+covid_spring <- covid_spring[,selected_vars]
+covid_summer <- covid_summer[,selected_vars]
+Data exploration and cleaning often consume most of the time spent on data analysis. Here we have only touched on exploration, but even after this initial analysis helped determine that Age is an important characteristic (we will confirm this later). From the list of variables, we removed those that are unknown before the disease develops (like hospitalization status). We build further models only on variables from the selected_vars vector.
+44.19 (18.32) 74.44
+(13.2) <0.001
+ 839 ( 8.8)
+ 260 ( 2.7)
+ 127 ( 1.3)
+ 111 ( 1.2)
+ 158 ( 1.7)
+2344 (24.7)
+3314 (34.9)
+3062 (32.3)
+273 (53.2)
+ 78 (15.2)
+ 57 (11.1)
+ 62 (12.1)
+ 68 (13.3)
+481 (93.8)
+335 (65.3)
+253 (49.3)
+<0.001
+<0.001
+<0.001
+<0.001
+<0.001
+<0.001
+<0.001
+<0.001
+]]></page><page Index="16" isMAC="true"><![CDATA[ ]]></page><page Index="17" isMAC="true"><![CDATA[ ]]></page><page Index="18" isMAC="true"><![CDATA[Model Audit
+18
+14Iff:Rp !Risafunctionthat
+predicts the value of yi using obse-
+Model Performance
+Depending on the type of predictive problem and what we assume about the distribution of the outcome, various measures of model performance can be used. Here is a short summary; find a more detailed description in the EMA book.
+For regression problems, when we predict a quantitative varia- ble, especially when we assume Gaussian noise, commonly used performance measures are Mean Squared Error14 and Rooted Mean Squared Error15.
+For binary classification problems, the outcome is commonly sum- marized with a 2 ⇥ 2 contingency table with possible results coded as True Positive, True Negative, False Positive, and False Negative. Positive means that the test suggests a pregnancy, while Negative means no pregnancy. True and False describe whether the test result is correct or not. Below is an example of such a table for a simple
+„morning sickness” test for the pregnancy.
+rvationx thePn i1n2
+MSE = np i (f(xi) - yi) 15 RMSE = MSE
+Tabela 1: Is morning sickness a good pregnancy test? This table is based on GetTheDiagnosis data http://getthediagnosis.org/ diagnosis/Pregnancy.htm. For example, FN = 61 means that out of 100 pregnant women for 61 the test suggested otherwise. Exempla- ry measures of performance are shown in the last row and column.
+16 ACC = (T P + T N)/n
+17 Sens = T P/(T P + FN)
+18 Spec = TN/(TN + FP)
+19 Prec = T P/(T P + FP)
+20 Recall = TP/(TP + FN) 21 F1 = 2 Prec⇤Recall
+Morning sickness
+/ pregnancy Has sickness Has not
+Pregnant Not Pregnant
+TP=39 FP=150 PPV=Prec=20.6% FN=61 TN=850 NPV=93.3%
+   Prec+Recall 22PPV= TP
+Based on such contingency table, the most commonly used measu- res of performance are Accuracy16, Sensitivity17, Specificity18, Preci- sion19 , Recall20 , F1 score21 , Positive Predicted Value22 and Negative Predicted Value23 .
+Note that, in the covid-mortality-risk-assessment problem, we are not interested in the binary prediction survived/dead, but rather in the validity of the ranking of risk scores. For such types of problems, instead of a contingency table, one looks at Receiver Operating Cha- racteristic (ROC) curve, and the commonly used measure of perfor- mance is the Area Under the ROC curve (AUC). Figure 6 shows how this measure is constructed.
+TP+FP 23NPV= TN
+T N+FN
+Figure 6: Panel A shows the distri- bution of scores obtained from the CDC model for the test data divi- ded by the survival status. By ta- king different cutoffs, one can turn such numerical scores into binary decisions. For each such split, the Sensitivity and 1-Specificity can be calculated and drawn on a plot. The CDC model returns only nine different values, making it reasona- ble to consider ten different cutoffs.
+Panel B shows these 10 points corresponding to different cutoffs. The ROC curve is the piecewise li- ne connecting these points, and the AUC is the area under this curve. The AUC takes values from 0 to 1, where 1 is the perfect ranking and a purely random ranking leads to an AUC of 0.5.
+A) Distribution of scores
+B) Receiver Operator Characteristic
+Sensitivity = Recall = 39%
+Specificity = 85%
+F1 = 33.8%
+ Among those who died 600
+40 20
+Among those who survived 2000
+1500 1000 500
+        3e-05 6e-05 0.00045 0.00135 0.0039 0.012 0.033 0.084 0.2370 scores
+ 1.00
+0.75
+0.50
+0.25
+0.00
+0.00 0.25
+0.50 0.75 1.0 1 - Specificity
+                        0
+Number of patients
+Sensitivity
+]]></page><page Index="19" isMAC="true"><![CDATA[19
+Model Audit
+R snippets
+There are many measures for evaluating predictive models, and they are located in various R packages (i.e. ROCR, measures, mlr3measures). For simplicity, in this example, we show only model performance measures implemented in the DALEX package.
+First, we need an explainer with specified validation data (here covid_summer) and the corresponding response variable.
+model_cdc <- DALEX::explain(cdc_risk,
+predict_function = function(m, x) m(x),
+                   data  = covid_summer,
+                   y     = covid_summer$Death == "Yes",
+                   type  = "classification",
+                   label = "CDC")
+Model exploration starts with an assessment of how good is the model. The DALEX::model_performance function calculates a set of measures for a specified type of task, here classification.
+mp_cdc <- model_performance(model_cdc, cutoff = 0.1) mp_cdc
+# Measures for:  classification
+# recall     : 0.2188841
+# precision  : 0.2602041
+# f1
+# accuracy
+# auc
+#
+# Residuals:
+# 0% 10% 20% 30% 40% 50% # -0.23700 -0.03300 -0.01200 -0.01200 -0.00390 -0.00390 # 60% 70% 80% 90% 100%
+# -0.00135 -0.00135 -0.00045 -0.00006 0.99955
+Note: The model is evaluated on the data given in the explainer. Use DALEX::update_data() to specify another dataset, e.g. traiing data covid_spring.
+model_cdc <-  update_data(model_cdc,
+                   data  = covid_spring,
+                   y     = covid_spring == "Yes")
+Note: Explainer knows whether the model is for classification or re- gression, so it automatically selects the right measures. It can be overridden if needed.
+The S3 generic plot function draws a graphical summary of the model performance. With the geom argument, one can determine the type of chart.
+# ROC curve, see Figure 6
+plot(mp_cdc, geom = "roc")
+# LIFT curve, see Figure 7
+       _
+plot(mp cdc, geom = "lift")
+: 0.2377622
+: 0.9673
+: 0.906654
+ Lift chart
+Model CDC
+ 40 30 20 10
+0.00 0.25
+0.50 0.75 1.00 Positive rate
+         Figure 7: LIFT curve, one of the many graphical statistics used in summarizing the quality of scores, often used in credit risk. The OX axis presents the fraction of assi- gned credits, and the OY axis pre- sents the ratio of the Sensitivity of the tested model to the Sensitivity of the random model.
+Lift
+]]></page><page Index="20" isMAC="true"><![CDATA[ ]]></page><page Index="21" isMAC="true"><![CDATA[ ]]></page><page Index="22" isMAC="true"><![CDATA[Model Assembly
+22
+24 L. Breiman, J. H. Friedman, R. A. Olshen, and C. J. Stone. Classifi- cation and Regression Trees. Wad- sworth and Brooks, Monterey, CA, 1984
+Grow a tree
+There are hundreds of different methods for training machine le- arning models available to experienced data scientists. One of the oldest and most popular are tree-based algorithms, first introduced in the book Classification And Regression Trees24 and commonly called CART. The general idea for this class of algorithms may be described as follows.
+1. Start with a single node (root) with a full dataset.
+2. For a current node, find a candidate split for the data in this node. To do this, consider every possible variable, and for each variable, consider every possible cutoff (for continuous variable) or a sub-
+set of levels (for categorical variable). Select split that maximizes
+selected measure of separation (see below).
+3. Check a stopping criteria like the minimum gain in node purity
+or depth of a tree. If the stopping criteria are met, then (obviously) stop. Otherwise, partition the current node into two child nodes and go to step 2 for each child node separately.
+There are two crucial choices here. First is the measure of separa- tion. We illustrate it by considering splits of the Age variable for our dataset. For practical reasons, let’s consider four groups.
+Tabela 2: Number of survivors or non-survivors there are in each Age group after the infection. Cal- culated for covid_spring data.
+25 For a categorical random varia- ble with probability pc for class c entropy isPdefined as
+H=- cpclog2pc,
+while GinPi impurity is defined as G = 1- c p2c. Check that the
+Gini impurity for the root node in our example is 0.0973.
+Tabela 3: Let us consider three po- ssible splits of the variable Age and step by step we calculate the pro- babilities of each class, the purity of each node and the weighted pu- rity of the split. The best split is for age 70, although for both the younger and older age groups the purity is worse than for the other splits. The weights defining the si- ze of the nodes proved to be crucial in this example.
+Age group / Status
+Survived Died
+630 31-50 2250 3716 6 17
+51-70 >70 Total 2760 729 9487 153 337 513
+ We consider three splits for cutoffs of 30, 50, and 70. For each split, we calculate the probability of death and survival in that gro- up. We then calculate the purity25 of each of the resulting nodes. In the example below, the Gini value is used, but entropy or statistical tests are also commonly used. The final split purity is defined as the weighted node purity considering the number of observations at each node. The smaller the value, the better. From the options below, we get the best purity for a cutoff of 70 years.
+Possible split 30 50 70 nodei 6>6>6>
+ pi,D
+pi,S
+G = 1 - p2
+i i,D
+node weight wi w6G6 + w>G>
+0.0027 0.9973 0.0053 0.2263
+0.066 0.0038
+0.934 0.9962 0.1228 0.00765 0.7737 0. 6008
+0.123 0.0198 0.877 0.9802 0.216 0.0388
+0.3992 0.8931
+0.316
+0.684 0.4324 0.1070
+- p2
+ i,S
+ 0.0962 0.0908
+0.0809
+Thee second key parameter for training a tree is the choice of the stopping criterion. Each split increases the purity of subsequent nodes, so the deeper the tree is the higher purity of leaves. hus, large (deep) trees extract more relations from data, although some may be accidental (a phenomenon called over-fitting), which may result in poorer generalisation and worse results on new/validation data.
+]]></page><page Index="23" isMAC="true"><![CDATA[23
+Model Assembly
+R snippets
+There are many libraries in R for training decision trees. The follo- wing snippets are based on the partykit26 library because it works for regression, classification and survival models has good statistical properties and has clear visualizations.
+To train a tree, we use ctree function. The first argument is a for- mula describing which variable is the target and which are the expla- natory variables. 27The second argument indicates the training data. The control argument specifies additional parameters such as node splitting criteria, maximum tree depth or maximum node size.
+library("partykit") _
+tree <- ctree(Death ~., covid spring,
+              control = ctree_control(alpha = 0.0001))
+# See Figure 8
+plot(tree)
+26 Torsten Hothorn and Achim Ze- ileis. partykit: A modular toolkit for recursive partytioning in R. Jo- urnal of Machine Learning Research, 16:3905–3909, 2015
+27 In this package, statistical tests are used to evaluate separation for a split. In the example below, alpha = 0.0001 means that nodes will be split as long as the p-value is below 0.0001 for the  2 test for indepen- dence.
+Figure 8: The first split in the tree is for the Age variable. Patients are divided into younger than 67 (left) and older than 67 (right). In the same manner, one can read other splits. The criteria adopted resulted in a tree with seven leaves. The le- aves include information about the number of patients who reached that leaf and the proportion of each class.
+ Cardiovascular.Diseases p < 0.001
+Cancer p < 0.001
+No
+Yes
+5 Age
+p < 0.001
+≤62 >62
+1 Age
+p < 0.001
+2≤67 >679
+   Cancer p < 0.001
+No Yes
+3 10
+Cardiovascular.Diseases p < 0.001
+NoYes
+Node 6 (n = 352) Node 7 (n = 117) 0.8 0.8 0.8
+0.6 0.6 0.6
+0.4 0.4 0.4
+0.2 0.2 0.2 0000000
+Node 4 (n = 8096) 1111111
+Node 8 (n = 124)
+Node 11 (n = 618)
+Node 12 (n = 67)
+Node 13 (n = 626)
+0.8 0.8 0.6 0.6 0.4 0.4 0.2 0.2
+0.8 0.8 0.6 0.6 0.4 0.4 0.2 0.2
+No
+Yes
+The explain function builds a uniform interface to query the mo- del. Note that the predict_function is different than for CDC mo- del, it is specific to party objects. Subsequent arguments indicate the test data for the explain count, model type and label.
+model_tree <- DALEX::explain(tree, predict_function = function(m, x)
+                    predict(m, x, type = "prob")[,2],
+           data = covid_summer,
+           y = covid_summer$Death == "Yes",
+           type = "classification", label = "Tree")
+Once the explainer is prepared, we can check how good this mo- del is. It looks like it is better than the CDC model both on the training and validation data.
+(mp_tree <- model_performance(model_tree, cutoff = 0.1))
+# Measures for:  classification
+# recall     : 0.8626609
+# precision  : 0.1492205
+Receiver Operator Characteristic Model CDC Tree
+ 1.00
+0.75
+0.50
+0.25
+0.00 0.00
+0.25 0.50 0.75 1.00 False positive rate
+          # f1
+# accuracy
+# auc
+# See Figure 9
+plot(mp_tree, mp_cdc, geom="roc")
+: 0.2544304
+: 0.8822
+: 0.9136169
+Figure 9: ROC curves for the CDC and tree model. Tree model has on average better predictions.
+True positive rate
+Yes No
+Yes No
+Yes No
+Yes No
+Yes No
+Yes No
+Yes No
+]]></page><page Index="24" isMAC="true"><![CDATA[ ]]></page><page Index="25" isMAC="true"><![CDATA[ ]]></page><page Index="26" isMAC="true"><![CDATA[Model Assembly
+26
+28 Leo Breiman. Random forests. Machine Learning, 45(1):5–32, 2001a. ISSN 0885-6125
+29 The term bootstrap refers to the saying "pull oneself up by one’s bo- otstraps" which relates to one of the tales of Baron Munchausen. It means to solve an impossible pro- blem without outside help. In the original, the Baron pulled himself out of the swamp by his own ha- ir. In the case of random forests, we have no new data, yet by cre- ating bootstrap copies, we are able to control and reduce the variance of the predictive model.
+Figure 10: The key steps are: to ge- nerate a set of B bootstrap copies of the dataset, generated by sam- pling with replacement. Deep tre- es are trained for each copy. To in- crease the variability between tre- es, the procedure for split selec- tion is changed in a way, that only a random subset of m variables is considered for a single node. Du- ring the prediction, the results of the individual trees are aggregated. Boostrap samples have out-of-bag (OOB) subsets, i.e. observations the- re were not selected during sam- pling, on which the performance of the model can be evaluated. A de- tailed description of the random forest algorithm is available at https://tinyurl.com/RF2001.
+R snippets
+Plant a forest
+Decision trees have many advantages, especially when it comes to interpretability and transparency. From a modelling perspective, de- ep trees have low bias but high variance (easily overfit to the data), while shallow trees have low variance but high bias (do not catch some relations). Can we improve both flexibility and stability?
+In 2001, Leo Breiman proposed a new family of models, called ran- dom forests28, which aggregate decisions from an ensemble of deep trees trained on bootstrap samples of the data. Bootstrap29 is today a very widespread and powerful statistical procedure. It creates B copies of the data, called bootstrap samples, by sampling with re- placement. One tree is trained on each copy of the data. During the prediction phase, the results from particular trees are aggregated. See Figure 10 for more details. Such a procedure improves model generalization by reducing the variance of individual trees.
+Training a random forest requires specifying a set of hyperpara- meters such as B - the number of trees, m - the size of the subset of variables from which to select split candidates for a single node, maximum tree depth, minimum node size, etc. We say more about the selection of hyperparameters in the next section, but fortunately the random forest algorithm is quite robust to the selection of hyper- parameters. Thanks to all these advantages, random forest is a very popular and efficient technique for predictive modelling.
+Create B bootstrap samples of the data
+Xy
+Train deep trees. In each node consider only m variables as possible splits
+Combine individual predictions
+vote!
+  X*1
+X*2
+X*3
+X*4
+y*1
+y*2
+y*3
+y*4
+             30 Andy Liaw and Matthew Wie- ner. Classification and Regression by randomForest. R News, 2(3):18– 22, 2002
+31 Marvin N. Wright and Andreas Ziegler. ranger: A fast implemen- tation of random forests for high dimensional data in C++ and R. Jo- urnal of Statistical Software, 77(1):1– 17, 2017
+The two most popular packages for training random forests in R are randomForest30 and ranger31. Both are easy to use, efficient and well parametrized. But here, we use mlr3 toolkit for model training. It adds an additional level of abstraction, a little more complex to use, but has additional features that we will be used in the next section devoted to hyperparameters.
+]]></page><page Index="27" isMAC="true"><![CDATA[27
+Training a model with mlr332 is performed in three steps.
+1. Define the prediction task, an object that remembers on what data which variable shall be predicted
+library("mlr3")
+(covid_task <- TaskClassif$new(id = "covid_spring",
+                         _
+          backend = covid spring,
+          target = "Death",  positive = "Yes"))
+  # <TaskClassif:covid_spring> (10000 x 8)
+  # * Target: Death
+  # * Properties: twoclass
+  # * Features (7):
+Model Assembly
+32 Michel Lang, Martin Binder, Ja- kob Richter, Patrick Schratz, Flo- rian Pfisterer, Stefan Coors, Qu- ay Au, Giuseppe Casalicchio, Lars Kotthoff, and Bernd Bischl. mlr3: A modern object-oriented machine learning framework in R. Journal of Open Source Software, 2019. doi: 10.21105/joss.01903
+# # #
+- fct (6): Cancer, Cardiovascular.Diseases, Diabetes, Gender, Kidney.Diseases, Neurological.Diseases
+- int (1): Age
+2. Select the family of models in which we want to look for a solu- tion. There is a lot of algorithms to choose from, see the documen- tation. Set "classif.ranger" for the random forests models.
+library("mlr3learners")
+library("ranger")
+covid_ranger <- lrn("classif.ranger", predict_type="prob",
+num.trees=25)
+3. Train the model with the train() method. The mlr3 package is
+using R6 classes, so this method modifies the object in place. covid_ranger$train(covid_task)
+A trained model can be turned into a DALEX explainer. Note that the predict_function is again slightly different. DALEX would guess it based on the class of the model, but we point it out explicitly to make it easier to understand what is going on underneath.
+model_ranger <- explain(covid_ranger, predict_function = function(m,x)
+               predict(m, x, predict_type = "prob")[,1],
+          data = covid_summer,
+          y = covid_summer$Death == "Yes",
+          type = "classification", label = "Ranger")
+We can now check how good this model is. As expected, a random forest model has better performance/AUC than a single tree.
+(mp_ranger <- model_performance(model_ranger))
+# Measures for:  classification
+# recall     : 0.04291845
+# precision  : 0.4347826
+Receiver Operator Characteristic
+Model Ranger
+0.00
+0.00 0.25 0.50
+CDC Tree
+1.00
+0.75
+0.50
+0.25
+            # f1
+# accuracy
+# auc
+: 0.078125
+: 0.9764
+: 0.9425837
+0.75 1.00 False positive rate
+ # See Figure 11
+plot(mp_ranger, mp_tree, mp_cdc, geom= "roc")
+Figure 11: ROC curves for the CDC, tree and ranger model.
+True positive rate
+]]></page><page Index="28" isMAC="true"><![CDATA[ ]]></page><page Index="29" isMAC="true"><![CDATA[ ]]></page><page Index="30" isMAC="true"><![CDATA[Model Assembly
+30
+33 Each of following steps can be im- plemented in many ways, so there is no single best way to tune mo- dels. We show an example frame- work for tabular data.
+Figure 12: The hyperparameter optimization scheme implemented in the mlr3tuning package. So- urce: https://mlr3book.mlr-org. com/tuning.html
+Hyperparameter Optimisation
+Machine Learning algorithms typically have many hyperparameters that specify model training process. For some models families, li- ke Support Vector Machines (SVM) or Gradient Boosting Machines (GBM), the selection of such hyperparameters has a strong impact on the performance of the final model. The process of finding good hyperparameters, a process that is commonly called tuning.
+The general optimization scheme33 is described in Figure 12. Diffe- rent model families have different sets of hyperparameters. We don’t always want to optimize all of them simultaneously, so the first step is to define the hyperparameter search space. Once it is specified, then tuning is based on a looped two steps: (1) select a set of hyper- parameters and (2) evaluate how good is this set of hyperparame- ters. These steps are repeated as long as some stopping criterion is met, such as the maximum number of iterations, desired minimum model performance, or some increase in model performance.
+  Start
+Suggest Hyperparameters
+ Search Space Tuner
+Terminator (when to finish
+End
+   Let’s focus a little more attention on the process of evaluating sets of hyperprameters. One of the key principles of machine lear- ning is that the model should be verified on different data than that used for training. Even if we have separate data for training and final testing, we must not sneak a peek or use that test data when evaluating hyperparameters. We need to generate internal test data for the hyperparameter evaluation. This is often done using internal cross-validation. See an example on the next page.
+R snippets
+The example below uses the mlr3 package. Other interesting solu- tions for hyperparameter optimization in R are h2o and tidymodels. First, we need to specify the space of hyperparameters to search.
+Not all hyperparameters are worth optimizing. Let’s focus on four for the random forest algorithm.
+library("mlr3tuning") library("paradox") search_space = ps(
+num.trees = p_int(lower = 50, upper = 500), max.depth = p_int(lower = 1, upper = 10),
+minprop = p_dbl(lower = 0.01, upper = 0.1), splitrule = p_fct(levels = c("gini", "extratrees"))
+)
+Evaulate Performance
+]]></page><page Index="31" isMAC="true"><![CDATA[31
+Model Assembly
+For automatic hyperparameter search, it is necessary to specify: (1) a procedure to evaluate the performance of the proposed models, below it is the AUC determined by 5-fold cross-validation, (2) a se- arch strategy for the parameter space, below it is a random search, (3) a stopping criterion, below it is the number of 10 evaluations34.
+34 Of course, Bit having a High Per- formance Cluster (HPC) can check hundreds of thousands of hyperpa- rameter configurations as the who- le process is easily parallelized. Ho- wever, in this example we have fo- cused on reproducibility, so we pre- sent results for 10 configurations, making it easy for any reader to reproduce these results. Also, for this dataset, the default random fo- rest parameters give very good re- sults, so we wouldn’t gain much with long tuning anyway.
+35 Note, that the AUC 0.9272979 presented below is not calculated on the covid_summer, but it is inter- nal evaluation of hyperparameters with the 5-fold CV procedure. AUC on the covid_summer is presented on the bottom of this page.
+36 Moreover, some algorithms, like random forests, are not very tuna- ble. Still, we had to try!
+Receiver Operator Characteristic
+     _
+tuned ranger =
+    learner
+    resampling = rsmp("cv", folds = 5),
+    measure    = msr("classif.auc"),
+    search_space = search_space,
+                               _
+    terminator = trm("evals", n evals = 10),
+    tuner      = tnr("random_search") )
+Once the optimization parameters have been defined, we can turn on their optimization with the train method, just as with any other predictive model in mlr3 framework35.
+tuned_ranger$train(covid_task)
+tuned_ranger$tuning_result
+#    num.trees max.depth    minprop splitrule
+# 1:       264         9 0.06907318      gini
+#    learner_param_vals  x_domain classif.auc
+# 1:          <list[4]> <list[4]>   0.9272979
+There is, of course, no guarantee that the tuner will find better hyperparameters than the default ones36. But in this example, the tuned model is better than all other models that we have considered so far. Let’s see how much. We need an DALEX wrapper.
+model_tuned <- explain(tuned_ranger, predict_function = function(m,x)
+        m$predict_newdata(newdata = x)$prob[,1],
+    data = covid_summer,
+    y = covid_summer$Death == "Yes",
+    type = "classification", label = "AutoTune")
+So we can calculate and compare model performance/AUC on validation data and then compare ROC curves for various models.
+(mp_tuned <- model_performance(model_tuned))
+# Measures for:  classification
+# recall     : 0.02575107
+# precision  : 0.4
+AutoTuner$new(
+= covid_ranger,
+Model Ranger 1.00
+0.75
+0.50
+0.25
+0.00
+0.00 0.25
+Figure 13: ROC curves for the CDC, tree, ranger model and auto tune ranger model.
+AutoTune CDC Tree
+          # f1
+# accuracy
+# auc
+# See Figure 13
+plot(mp_tuned, mp_ranger, mp_tree, mp_cdc, geom = "roc")
+Note on reproducibility: Take into account that the training is based on randomization, so you may get slightly different results on different computers or with different versions of packages. Even if you execute the same snippet twice, you may get slightly different results. Nevertheless, the general conclusions should be the same.
+: 0.0483871
+: 0.9764
+: 0.9447171
+0.50 0.75 1.00 False positive rate
+True positive rate
+]]></page><page Index="32" isMAC="true"><![CDATA[ ]]></page><page Index="33" isMAC="true"><![CDATA[ ]]></page><page Index="34" isMAC="true"><![CDATA[Model Audit
+34
+  AUC
+f(x)
+  Var Imp
+a
+ Model
+Instance
+The XAI pyramid describes rela- tions between explanatory model analysis techniques. The deeper, the more detailed view into the mo- del.
+37 The permutational variable im- portance is described in detail in Chapter 16 of Explanatory Mo- del Analysis https://ema.drwhy. ai/featureImportance.html
+Figure 14: Permutation of variables preserves the marginal distribution while breaking the dependence of that variable on the target.
+Variable-importance
+When we examine a high-dimensional model, one of the first qu- estions that come up are: which variables are important? which features or groups of features significantly affect the model’s performance?
+Some models have built-in methods for the assessment of variable importance. For example, for linear models, one can use standardi- zed model coefficients or p-values. For the random forest, one can use out-of-bag classification error. For tree boosting models, one can use information gain statistics. Yet, the problem with such model- specific techniques is that they cannot be compared between mo- dels of different structures. For this and few other reasons, it is co- nvenient to use model agnostic techniques, such as permutational importance of variables37 .
+The procedure is based on perturbations of a selected variable or group of variables. The intuition is that if a variable is important in a model, then after its random perturbation, the model predictions should be less accurate.
+The permutation-based variable-importance of a variable i is the difference (or ratio) between the model performance for the origi- nal data and the model performance calculated on data with the permuted variable i. More formally
+VI(i) = L(f, Xperm(i), y) - L(f, X, y),
+where L(f, X, y) is the value of loss function or performance me- asure for the data X, true labels y and model f, while Xperm(i) is dataset x with i-th variable permuted.
+Note that the importance of the variables defined in such a way can be determined without re-training of the model.
+Which performance measure should you choose? It’s up to you. In the DALEX library, by default, RMSE is used for regression and 1-AUC for classification problems. But you can change the loss func- tion by specifying the loss_function argument.
+R snippets
+We use the model_parts function from the DALEX package to calcu- late the importance of variables. The only required argument is the model to be analyzed. With additional arguments, one can also spe- cify how the importance of variables is to be calculated, whether as a difference, ratio or without normalization. The last line _baseline_ of the following listing corresponds to the difference in loss function of a model calculated on data in which all variables have been per- muted.
+mpart_ranger <- model_parts(model_ranger, type="difference") mpart_ranger
+ # # 1 # 2
+             variable mean_dropout_loss  label
+         _full_model_      0.0000000000 Ranger
+Neurological.Diseases      0.0006254491 Ranger
+]]></page><page Index="35" isMAC="true"><![CDATA[35
+Model Audit
+#3 #4 #5 #6 #7 #8 #9
+                 Gender
+        Kidney.Diseases
+                 Cancer
+               Diabetes
+Cardiovascular.Diseases
+                    Age
+             _baseline_
+0.0030246808 Ranger
+0.0048972639 Ranger
+0.0061278070 Ranger
+0.0076210243 Ranger
+0.0207565006 Ranger
+0.1580579207 Ranger
+0.4203818555 Ranger
+This technique is handy when we want to compare the importan- ce of variables in different models. Let’s see how it looks for our example. The generic plot function works for any number of mo- dels given as consecutive arguments.
+mpart_cdc    <- model_parts(model_cdc)
+mpart_tree   <- model_parts(model_tree)
+mpart_ranger <- model_parts(model_ranger)
+mpart_tuned  <- model_parts(model_tuned)
+# See Figure 15
+plot(mpart_cdc, mpart_tree, mpart_ranger, mpart_tuned, show_boxplots = FALSE)
+ Variable importance AutoTune
+CDC
+Tree
+                      Age Cardiovascular.Diseases Cancer
+Gender
+Kidney.Diseases Diabetes Neurological.Diseases
+Ranger
+0.1
+Age Cardiovascular.Diseases Cancer
+Gender
+Kidney.Diseases Diabetes Neurological.Diseases
+                        Age Cardiovascular.Diseases Cancer
+Gender
+Kidney.Diseases Diabetes Neurological.Diseases
+Age Cardiovascular.Diseases Cancer
+Gender
+Kidney.Diseases Diabetes Neurological.Diseases
+  0.2
+0.3
+0.4 0.5
+One minus AUC loss after permutations
+0.1 0.2 0.3
+0.4 0
+Looking for more?
+The same perturbation technique can be used to analyze the impor- tance of groups of variables. Just use the variable_groups argument. Grouping variables can be particularly useful if the number of varia- bles is large and groups of variables describe some common aspects. In our case we could group all diseases together.
+For highly correlated variables, an interesting model exploration technique is triplot, which summarise correlations structure via dendrogram and also show the importance of groups of correlated variables. Still, variable importance analysis when variables are cor- related must be performed with care.
+.5
+Figure 15: The importance of va- riables can be compared between models, and it is usually a sour- ce of valuable information. In this plot, each bar starts at 1-AUC for the model on the original data and ends at 1-average AUC calculated on the data with the indicated va- riable permuted.
+For the CDC model, the only important variable is Age. For the tree model, the three important va- riables are Age, Cancer, and Car- diovascular diseases, an observa- tion consistent with Figure 8. For the ranger model and the model after tuning of hyperparameters, more variables are taken into acco- unt. However, Age is indisputably the most important variable in all models.
+]]></page><page Index="36" isMAC="true"><![CDATA[ ]]></page><page Index="37" isMAC="true"><![CDATA[ ]]></page><page Index="38" isMAC="true"><![CDATA[Model Audit
+38
+ AUC
+f(x)
+ PD / ALE
+Model
+Instance
+Both methods are described in detail in Chapter 17 of Explanatory Model Analy- sis https://ema.drwhy.ai/ partialDependenceProfiles.html
+Figure 16: In the data set, the va- riable i is replaced by the value t, then average model response is cal- culated.
+Partial Dependence and Accumulated Local Effects
+Once we know which variables are important, it is usually intere- sting to determine the relationship between a particular variable and the model prediction. Popular techniques for this type of Explanato- ry Model Analysis are Partial Dependence (PD) and Accumulated Local Effects (ALE).
+PD profiles were initially proposed in 2001 for gradient boosting models but can be used in a model agnostic fashion. This method is based on analysis of average model response after replacing the variable i with the value of t.
+More formally, Partial Dependence profile for a variable i is a function of t defined as
+PD(i, t) = E [f(x1, ..., xi-1, t, xi+1, ..., xp)] ,
+where the expected value is calculated over the data distribution.
+The straightforward estimator is
+1 Xn
+PcD(i, t) = n f(xj1, ..., xji-1, t, xji+1, ..., xjp).
+j=1
+Replacing i-th variable by the value t can lead to very strange observations, especially when i-th variable is correlated with other variables, and we ignore the correlation structure. One solution to this are Accumulated Local Effects profiles which average over the conditional distribution.
+Showing a variable response profile carries a lot of information. However, keep in mind that in complex models, you should expect complex interactions. Thus, one global profile for a variable may be an oversimplification. An extension of PD profiles is to calculate them in subgroups defined by some other variables or based on segments of observations found from model responses. You will find some examples below.
+R snippets
+We use the model_profile function from the DALEX package to cal- culate the variable profile. The only required argument is the model to be analyzed. It is a good idea to specify names of variables for profile estimation as a second argument, otherwise, profiles are cal- culated for all variables, which can take some time. One can also specify the exact grid of values for calculations of profiles.
+The average is calculated for the distribution specified in the data argument in the explainer. Here we calculate the PD profiles for the Age variable for covid_summer data.
+mp_ranger <- model_profile(model_ranger, "Age")
+# See Figure 17
+plot(mp_ranger)
+  PD profile
+Age 0.3
+0.2
+0.1
+       0
+Figure 17: Partial dependence pro- file for Age variable.
+0 25 50 75 10
+average prediction
+]]></page><page Index="39" isMAC="true"><![CDATA[39
+Model Audit
+Since we have four models it is worth comparing how they differ in terms of the model’s response to the Age variable.
+mp_cdc    <- model_profile(model_cdc, "Age")
+mp_tree   <- model_profile(model_tree, "Age")
+mp_tuned  <- model_profile(model_tuned, "Age")
+# See Figure 20
+plot(model_cdc, model_tree, mp_ranger, model_tuned)
+ Age 0.3
+0.2
+0.1
+AutoTune
+CDC Ranger Tree
+       0.0
+0 25 50 75 100
+  Grouped Partial Dependence profiles
+By default, the average is calculated for all observations. But with the argument groups one can specify a grouping variable. PD profi- les are calculated independently for each level of this variable.
+mgroup_ranger <- model_profile(model_ranger, "Age", groups = "Diabetes")
+# See Figure 19
+plot(mgroup_ranger)
+Clustered Partial Dependence profiles
+If the model is additive, then individual profiles (see the next Sec- tion related to Ceteris Paribus profiles) are parallel. But if the model has interactions, individual profiles may have different shapes for different values of variables in interaction. To see if there are such interactions we can cluster the individual profiles.
+If we specify the argument k then the function model_profile per- forms a hierarchical clustering of the profiles, determine the group of k most different profiles and then calculate the Partial Dependen- ce for each of these groups separately.
+0
+Figure 19: Partial Dependence for Age in groups defined by Diabetes variable.
+Figure 18: Each colour indicates a different model. The CDC model has a shifted jump in risk of death. Models based on covid_spring da- ta are more likely to place the dra- matic increase in the risk around age 65. The tree model is too shal- low to capture the ever-increasing risk in the oldest group. Despite this, the models are quite consi- stent about the general shape of the relationship.
+PD profiles for groups
+0.5 Age 0.4
+0.3
+0.2
+0.1 0.0
+Ranger_No
+Ranger_Yes
+             mclust_ranger <- model_profile(model_ranger, "Age", k=3,center=TRUE)0
+# See Figure 20
+plot(mclust_ranger)
+Figure 20: Partial Dependence for three segments.
+0
+25 50 75 10
+ PD profiles for segments Age
+0.6 0.4 0.2 0.0
+       0 25 50 75 10
+average prediction
+average prediction
+]]></page><page Index="40" isMAC="true"><![CDATA[ ]]></page><page Index="41" isMAC="true"><![CDATA[ ]]></page><page Index="42" isMAC="true"><![CDATA[Model Audit
+42
+ AUC
+f(x)
+ SHAP / BD
+Model
+Instance
+Instance level exploration
+From the model developer perspective, we are often interested in the global behaviour of a model, i.e. whether it has high performance or how it changes on average as s function of some feature. But the user perspective is different. In most cases, a user is interested in an individual prediction related to him or her. Often we hear about the
+„right to explanation”, which means that for a model prediction, we should be able to find out which variables significantly influenced the model prediction. Especially for high-stake decisions, we should enrich model predictions with as much information as possible to support informed and responsible predictions.
+Shapley values and the Break-down plots
+For tabular data, one of the most commonly used techniques for local variable attribution is Shapley values. The key idea behind this method is to analyze the sequence of conditional expected values. This way, we can trace how the conditional mean moves from the average model response to the model prediction for observation of interest x⇤. Let’s consider a sequence of expected values.
+μ = E[f(X)],
+μ x 1 = E [ f ( X ) | X 1 = x ⇤1 ] ,
+μx1,x2 = E [f(X)|X1 = x⇤1, X2 = x⇤2] ,
+...⇥ ⇤ ⇤ ⇤⇤⇤
+μx1,x2,...,xp = E f(X)|X1 = x1, X2 = x2, ..., Xp = xp = f(x ).
+By looking at consecutive differences μx1 - μ, μx1,x2 - μx1 and so on, one can calculate the added effects of individual variables, see an example in Figure 21. Sound like a straightforward solution, ho- wever, there are two issues with this approach.
+One is that it is not easy to estimate conditional expected value. In most implementations, it is assumed that features are independent, and then we can estimate μK as an average model response with va- riables in set K replaced by corresponding values from observation x⇤. So the crude estimate would be
+μbK =
+1 Xn ni=1
+f(xo1,xo2,...,xop), where
+  xo = x⇤, if j 2 K j j
+xoj =xij,ifj62K.
+The second issue is that these effects may depend on the order of conditioning. How to solve this problem? The Shapley values method calculates attributions as an average of all (or at least a large number of random) orderings, while the Break-down method uses a single ordering determined with a greedy heuristic that prefers variables with the largest attribution on the beginning.
+]]></page><page Index="43" isMAC="true"><![CDATA[ 43
+Model Audit
+R snippets
+all data
+Age = 76 Cardiovascular.Diseases = Yes Gender = Male Kidney.Diseases = No
+Cancer = No
+Diabetes = No Neurological.Diseases = No
+Consecutive conditoning for Ranger
+Figure 21: The following rows show the conditional distributions (vio- plots) and the conditional expected value (red dot). The grey lines be- tween the rows show how the pre- dictions for each observation chan- ge after replacing the next variable with the value from observation x⇤ . Analyzing such a sequence of con- ditionings, we can read which va- riables significantly explain the dif- ferences between the mean model response (first row) and the obse- rved model response (last row).
+0.0 0.2
+0.4 0.6
+Let’s define an observation for which we will examine the model more closely. Let it be a 76-year-old man with hypertension. We show local model analysis using the model_ranger as an example.
+Steve <- data.frame(Gender
+   Age
+   Cardiovascular.Diseases
+   Diabetes
+   Neurological.Diseases
+   Kidney.Diseases
+                           = factor("Male", c("Female", "Male")),
+                           = 76,
+                           = factor("Yes", c("No", "Yes")),
+                           = factor("No", c("No", "Yes")),
+                           = factor("No", c("No", "Yes")),
+                           = factor("No", c("No", "Yes")),
+                           = factor("No", c("No", "Yes")))
+The predict_parts function for a specified model and a specified observation calculates local variable attributions. The optional argu- ment order forces to use a specified sequence of variables. If not specified, then a greedy heuristic is used to start conditioning with the most relevant variables. Results are presented in Figure 22.
+(bd_ranger <- predict_parts(model_ranger, Steve))
+   Cancer
+predict(model_ranger, Steve)
+# 0.322
+#
+# Ranger: intercept
+# Ranger: Age = 76
+# Ranger: Cardiovascular.Diseases = Yes
+# Ranger: Gender = Male
+# Ranger: Kidney.Diseases = No
+# Ranger: Cancer = No
+# Ranger: Diabetes = No
+# Ranger: Neurological.Diseases = No
+# Ranger: prediction
+plot(bd_ranger)
+contribution
+    0.043
+    0.181
+    0.069
+    0.033
+   -0.004
+   -0.002
+    0.003
+    0.000
+    0.322
+The alternative is to average over all (or at least many random) or- derings of variables. This is how the Shapley values are calculated. The show_boxplots argument highlights the stability of the estima- ted attributions between different orderings. See Figure 22.
+shap_ranger <- predict_parts(model_ranger, Steve, type = "shap") plot(shap_ranger, show_boxplots = TRUE)
+]]></page><page Index="44" isMAC="true"><![CDATA[Model Audit
+44
+ Shapley values for Ranger
+Break-down for Ranger
+                      Age = 76 Cardiovascular.Diseases = Yes Gender = Male Kidney.Diseases = No
+Cancer = No
+Diabetes = No Neurological.Diseases = No
+intercept
+Age = 76 Cardiovascular.Diseases = Yes Gender = Male Kidney.Diseases = No
+Cancer = No
+Diabetes = No Neurological.Diseases = No prediction
+0.043
+0.1 prediction
+ +0.181 +0.069
+ 0.0 0.1 contribution
+0.2
+0.0
+0.2
++0.033 -0.004 -0.002 +0.003 +0 0.322
+0.3 0.4
+Figure 22: Shapley values (left) and Break-down (right) illustrate the contributions of each variable to the final model response. Both attri- bution techniques ensure that the sum of the individual attributions adds up to the final model predic- tion.
+38 This option can identify pa- irwise interactions, see Chap- ter 7 in https://ema.drwhy.ai/ iBreakDown.html.
+The Shapley values are additive. For models with interactions, it is often too much of a simplification. Other possible values of the type argument are shap, break_down, break_down_interactions38 or oscillations.
+Note that by default, functions such as model_parts, predict_parts, _
+model profiles do not calculate statistics on the entire data set (may be time consuming), but on n_samples of random cases, and the en- tire procedure is repeated B times to estimate the error bars.
+Ceteris Paribus
+Ceteris Paribus (CP) is a Latin phrase for "other things being equal". It is also a very useful technique for the analysis of model behavio- ur for a single observation. CP profiles, sometimes called Individual Conditional Expectations (ICE), show how the model response wo- uld change for a selected observation if a value for one variable was changed while leaving the other variables unchanged.
+While local variable attribution is a convenient technique for an- swering the question of which variables affect the prediction, the local profile analysis is a good technique for answering the question of how the model response depends on a particular variable. Or answering the question of what if...
+R snippets
+The predict_profiles() function calculates Ceteris Paribus profiles for a selected model and selected observations. By default, it calcu- lates profiles for all variables, but one can limit this list with the variables vector of variables.
+cp_ranger <- predict_profile(model_ranger, Steve) cp_ranger
+# Top profiles :
+ AUC
+f(x)
+ CP / ICE
+Model
+Instance
+#
+# 1
+# 1.1
+# 11
+# 1.110   Male  0.99
+Gender   Age Cardiovascular.Diseases Diabetes
+Female 76.00
+  Male 76.00
+  Male  0.00
+Yes       No
+Yes       No
+Yes       No
+Yes       No
+The calculated profiles can be drawn with the generic plot func- tion. As with other explanations in the DALEX library, multiple mo- dels can be plotted on a single graph. Although for technical reasons,
+]]></page><page Index="45" isMAC="true"><![CDATA[45
+Model Audit
+quantitative and qualitative variables cannot be shown in a single chart. So if you want to show the importance of quality variables, you need to plot them separately.
+Figure 23 shows an example of a CP profile for continuous varia- ble Age and categorical variable Cardiovascular.Diseases.
+# See Figure 23
+plot(cp_ranger, variables = "Age")
+plot(cp_ranger, variables = "Cardiovascular.Diseases",
+        categorical_type = "lines")
+ Ceteris paribus for Ranger Age
+0.4
+0.2
+0.0
+0 25 50 75 100
+Ceteris paribus for Ranger Cardiovascular.Diseases
+0.4
+0.2
+0.0
+               No Yes
+ The plot function can combine multiple models, making it easier to see similarities and differences.
+cp_cdc <- predict_profile(model_cdc, Steve) cp_tree<-predict_profile(model_tree,Steve)0
+cp_tune <- predict_profile(model_tuned, Steve)
+# See Figure 24 Figure 24: CP profiles for Steve, co- plot(cp_cdc, cp_tree, cp_ranger, cp_tune, variables = "Age") lors code four considered models.
+CP profiles are also useful for finding the importance of variables in a model. The more the profiles fluctuate, the more influential is the variable. Such a measure of importance is implemented in the predict_parts function under option type = "oscillations"39.
+__
+predict parts(model ranger, Steve, type = "oscillations")
+                                1   0.22872998
+                                1   0.16371903
+                                1   0.09641507
+                                1   0.05052652
+                                1   0.03984208
+                                1   0.03308303
+                                1   0.03164090
+39 The size of the oscillation can be measured in many ways, by de- fault, it is an area between the CP profile and a horizontal line at the level of the model prediction.
+_vname_ _ids_ oscillations
+Figure 23: The dot shows the ob- servation under analysis. CP pro- file shows how the model predic- tion change for changes in the se- lected variable. On the left is the CP profile for the continuous varia- ble, on the right for the categorical variable. For a categorical variable, you can specify how the CP profi- les should be drawn by specifying the categorical_type argument.
+      #
+# 2
+# 6
+# 7
+# 4
+# 3 Cardiovascular.Diseases
+# 1                  Gender
+# 5   Neurological.Diseases
+            Age
+Kidney.Diseases
+         Cancer
+       Diabetes
+Ceteris paribus for Steve Age
+0.4
+0.2
+0.0
+0 25 50 75 10
+ prediction
+prediction
+prediction
+]]></page><page Index="46" isMAC="true"><![CDATA[ ]]></page><page Index="47" isMAC="true"><![CDATA[ ]]></page><page Index="48" isMAC="true"><![CDATA[Model Deployment
+48
+40 Hubert Baniecki and Przemyslaw Biecek. The Grammar of Interac- tive Explanatory Model Analysis. Arxiv, 2020. URL https://arxiv. org/abs/2005.00497
+Figure 25: modelStudio is an appli- cation that facilitates model explo- ration using a serverless site based on javascript. The user can confi- gure the content of each panel to look at the model from different perspectives.
+Model Deployment
+We have made the model built for Covid data, along with the expla- nations described in this book, available at https://crs19.pl/ we- bpage. After two months, tens of thousands of people used it. What is important, with proper tools, the deployment of such a model is not difficult.
+To obtain a safe and effective model, it is necessary to perform a detailed explanatory model analysis. Although we often don’t have much time for it. That is why tools that facilitate fast and automated model exploration are so useful.
+One of such tools is modelStudio40. It is a package that transforms an explainer into html page with javascript based interaction. Such html page is easy to save on a disk or share by email. The webpa- ge has various explanations pre-calculated, so its generation may be time-consuming, but the model exploration is very fast, and the feedback loop is tight.
+Generating a modelStudio for an explainer is trivially easy.
+library("modelStudio")
+ms <- modelStudio(model_ranger) # See Figure 25
+ms
+An example dashboard built for a model for dozens of variables and several thousand rows on football player worth prediction ba- sed on the FIFA dataset is available at
+https://pbiecek.github.io/explainFIFA20/.
+ ]]></page><page Index="49" isMAC="true"><![CDATA[49
+Model Deployment
+If we want to automate the comparison of several models, Arena is a very convenient tool for such exploration. It can work in two modes: live (with the server which adds the necessary statistics on the fly) and pre-calculated statistics. In the case of many models and large datasets, the live mode is much more convenient.
+The dashboard is created with the create_arena function. Then with push_model and push_observations, one can add more models and more observations for model exploration. The resulting object can be turned into the live web application with the run_server function.
+The snippet below turns four covid models into a dashboard.
+library("arenar") library("dplyr")
+covid_ar <- create_arena(live = TRUE) %>% push_model(model_cdc) %>% push_model(model_tree) %>% push_model(model_ranger) %>% push_model(model_tuned) %>% push_observations(Steve)
+# See Figure 26
+run_server(covid_ar)
+An example dashboard built for a model for dozens of variables and several thousand rows on football player worth prediction ba- sed on the FIFA dataset is available on page https://arena.drwhy. ai/?demo=1.
+Figure 26: arenar is a web applica- tion that facilitates exploration of multiple models.
+ ]]></page><page Index="50" isMAC="true"><![CDATA[ ]]></page><page Index="51" isMAC="true"><![CDATA[ ]]></page><page Index="52" isMAC="true"><![CDATA[Epilogue
+52
+About the authors
+Przemysław Biecek - graduated in mathematical statistics and so- ftware engineering at the Wrocław University of Technology. Cur- rently, he conducts research on responsible artificial intelligence and teaches students at the Warsaw University of Technology and the University of Warsaw. He founded a group of data analysis enthu- siasts MI2 that develops methods and tools for responsible machine learning. In his free time, together with Beta and Bit, he travels the world and seeks adventure.
+Anna Kozak - graduated in mathematical statistics and data analy- sis at the Warsaw University of Technology. She currently teaches classes in data visualization and exploration techniques and con- ducts research in the area of responsible machine learning with the MI2 group. In free time she organizes workshops in the Data Science area or reads detective stories.
+Aleksander Zawada - Cartoonist, illustrator, graphic designer, al- though he trained as an architect at the Warsaw University of Tech- nology. Professionally engaged in all forms of graphic creation. He runs the foundation cyberetyka.pl. Besides, he loves board games, role-playing and strategy games, sports, and emotions.
+About the book
+Two students from the Warsaw University of Technology went he- ad to head in a competition announced by NASA. Mietek Bekker won, and it was his Lunar Roving Vehicle in the Apollo spacecraft that flew to the moon. How are such students born? Through con- tact with exceptional tutors. And what characterizes the latter? An original and inspiring delivery.
+An exceptional textbook by professor Przemysław Biecek is now in your hands.
+Marek Sta˛czek Coach, storyteller, author of books
+   ]]></page></pages></Search>
