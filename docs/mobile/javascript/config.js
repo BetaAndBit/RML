@@ -126,9 +126,9 @@ btnTableOfContent:["btnBookMark"]
 	LinkAlpha:0.5,
 	OpenWindow:"_Blank",
 
-	BookMarkButtonVisible:'true',
+	BookMarkButtonVisible:'s',
 	productName : 'Demo created by Flip PDF',
-	homePage : 'http://www.flipbuilder.com/',
+	homePage : 'https://betaandbit.github.io/RML/',
 	isFlipPdf : "true",
 	TableOfContentButtonVisible:"true",
 	searchTextJS:'javascript/search_config.js',
@@ -278,7 +278,7 @@ bookConfig.largePageHeight=841;
 bookConfig.bookTitle="The Hitchhiker's Guide to Responsible Machine Learning";
 bookConfig.normalPath="./files/mobile/";
 bookConfig.largePath="./files/mobile/";
-bookConfig.productName="Flip PDF";
+bookConfig.productName="RML";
 bookConfig.useTheAliCloudChart=false;
 bookConfig.MidBgColor="#a2f345";
 bookConfig.bookmarkCR = "889103a5626a4ab380d19e2d5cd71d85d7f5f55c";

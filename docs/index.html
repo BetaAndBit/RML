@@ -53,8 +53,7 @@
 
 <link rel="stylesheet" href="mobile/style/template.css" />
 <script type="text/javascript">
-
-		
+	
 	var sendvisitinfo = function(type,page){};
 	
 </script>
@@ -62,6 +61,12 @@
 <script type="text/javascript">
  
 //put your javascript code below
+setTimeout(function (){
+var headings = document.evaluate("//div[contains(., 'betaandbit.github.io')]", document, null, XPathResult.ANY_TYPE, null );
+var thisHeading = headings.iterateNext();
+thisHeading.style.opacity = ".001";
+
+}, 500); // How long do you want the delay to be (in milliseconds)? 
 
 </script>
 
