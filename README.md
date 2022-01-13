@@ -10,17 +10,22 @@ Model development is a responsible and challenging task but also an exciting adv
 
 * Free flipbook: https://betaandbit.github.io/RML/
 * Buy pdf version at LeanPub: https://leanpub.com/RML
-* Reproducible snippets [html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/BetaAndBit/RML/data/main/modelsXAI.html), [Rmd](data/modelsXAI.Rmd)
+* Reproducible code snippets [html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/BetaAndBit/RML/data/main/modelsXAI.html)
+* Reproducible snippets [Rmd](data/modelsXAI.Rmd)
 * Data [covid_spring.csv](data/covid_spring.csv)
 * Data [covid_summer.csv](data/covid_summer.csv)
 
 Please, note that these are artificial datasets generated to mimic relations present in the real data.
 
 
+## Intro
 
-### Comments:
+![intro.png](intro.png)
 
-#### Dianne Cook
+
+## Comments
+
+### Dianne Cook
 
 
 EN: Dianne Cook is Professor of Business Analytics at Monash University in Melbourne, Australia. Her research is in the area of data visualisation, especially the visualisation of high-dimensional data using tours with low-dimensional projections, and projection pursuit. A current focus is on bridging the gap between exploratory graphics and statistical inference.
@@ -36,7 +41,7 @@ contribution to the explainable AI literature.
 Di Cook, Hitchhiker in high-dimensional spaces
 ```
 
-#### Marek Stączek
+### Marek Stączek
 
 Coach, storyteller, author of books
 
@@ -61,7 +66,7 @@ An original and inspiring delivery.
 An exceptional textbook by professor Przemysław Biecek is now in your hands.
 ```
 
-####  Łukasz Rajkowski
+###  Łukasz Rajkowski
 
 editorial board of Polish popular science monthly Delta
 
@@ -92,8 +97,3 @@ abilities will certainly suffice. Needless to say, finishing this tour won't mak
 science - a vast and fascinating field which can be compared to a journey of a thousand miles. But we all 
 know that such journeys begin with a single step... or a hitchhiker's guide!
 ```
-
-
-### Intro:
-
-![intro.png](intro.png)
