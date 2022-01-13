@@ -1,9 +1,22 @@
 # The Hitchhiker’s Guide to Responsible Machine Learning
 
+This book is a unique entanglement of theory, examples and processes relevant to Responsible Machine Learning. You will find intuitions and examples for Interpretable Machine Learning (IML) and eXplainable Artificial Intelligence (XAI). Descriptions are supplemented by code snippets with examples for R with the use of randomForest, mlr3 and DALEX packages. Finally, the process is shown through a comic book describing the adventures of two characters, Beta and Bit. The interaction of these two shows the decisions that analysts often face, whether to try a different model, try another technique for exploration or look for other data -- questions like how to compare models or validate them.
 
-### HTML: 
+All examples are fully reproducible so that one can replay all adventures on a local desktop.
 
-https://betaandbit.github.io/RML/
+Model development is a responsible and challenging task but also an exciting adventure. Sometimes textbooks focus only on the technical side, losing all the fun. Here we are going to have it all.
+
+## Materials 
+
+* Free flipbook: https://betaandbit.github.io/RML/
+* Buy pdf version at LeanPub: https://leanpub.com/RML
+* Reproducible snippets [html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/BetaAndBit/RML/data/main/modelsXAI.html), [Rmd](data/modelsXAI.Rmd)
+* Data [covid_spring.csv](data/covid_spring.csv)
+* Data [covid_summer.csv](data/covid_summer.csv)
+
+Please, note that these are artificial datasets generated to mimic relations present in the real data.
+
+
 
 ### Comments:
 
@@ -83,4 +96,4 @@ know that such journeys begin with a single step... or a hitchhiker's guide!
 
 ### Intro:
 
-![https://github.com/BetaAndBit/Predictive-Models/blob/main/intro.png](https://github.com/BetaAndBit/Predictive-Models/blob/main/intro.png)
+![intro.png](intro.png)
