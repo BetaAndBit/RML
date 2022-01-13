@@ -10,10 +10,10 @@ Model development is a responsible and challenging task but also an exciting adv
 
 * Free flipbook: https://betaandbit.github.io/RML/
 * Buy pdf version at LeanPub: https://leanpub.com/RML
-* Reproducible code snippets [html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/BetaAndBit/RML/data/main/modelsXAI.html)
-* Reproducible snippets [Rmd](data/modelsXAI.Rmd)
-* Data [covid_spring.csv](data/covid_spring.csv)
-* Data [covid_summer.csv](data/covid_summer.csv)
+* Reproducible code snippets: [html](https://htmlpreview.github.io/?https://github.com/BetaAndBit/RML/blob/main/data/modelsXAI.html)
+* Reproducible snippets: [Rmd](data/modelsXAI.Rmd)
+* Data: [covid_spring.csv](data/covid_spring.csv)
+* Data: [covid_summer.csv](data/covid_summer.csv)
 
 Please, note that these are artificial datasets generated to mimic relations present in the real data.
 
