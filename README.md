@@ -17,6 +17,11 @@ Model development is a responsible and challenging task but also an exciting adv
 
 Please, note that these are artificial datasets generated to mimic relations present in the real data.
 
+## Other language versions
+
+* Polish: *Wprowadzenie do Modelowania Predykcyjnego* [GitHub](https://github.com/BetaAndBit/MiniML), [flipbook](https://betaandbit.github.io/MiniML/)
+* Spanish: *La Guía del Viajero al Aprendizaje Automático Responsable* [GitHub](https://github.com/BetaAndBit/RML_ES), [flipbook](https://betaandbit.github.io/RML_ES/)
+* Vietnamese: *4.0.1 Cùng xây dựng Model Machine Learning với Bêta và Bít* [GitHub](https://github.com/BetaAndBit/RML_VN), [flipbook](https://betaandbit.github.io/RML_VN/)
 
 ## Intro
 
