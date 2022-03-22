@@ -102,3 +102,34 @@ abilities will certainly suffice. Needless to say, finishing this tour won't mak
 science - a vast and fascinating field which can be compared to a journey of a thousand miles. But we all 
 know that such journeys begin with a single step... or a hitchhiker's guide!
 ```
+
+###  Fernando Marmolejo-Ramos
+
+Research fellow in human and artificial cognition at the Centre for Change and Complexity in Learning at the University of South Australia. 
+
+EN:
+
+```
+Data science requires knowledge of the data and the methods to parse such data. A new kid
+on the analytical block is gaining popularity among data scientists: machine learning. It is
+powerful as it combines long-standing statistical methods with computational versatility. But
+as as the ‘Peter Parker principle’ goes ‘with great power comes great responsibility’. Biecek’s
+textbook provides a concise tutorial on how to tame the power of machine learning
+responsibly. This textbook needs to be read by anyone daring to tickle the power of machine
+learning.
+```
+
+ES:
+
+```
+La ciencia de datos requiere conocimiento de los datos y los métodos para analizar dichos
+datos. Un nuevo chico en el bloque analítico está ganando popularidad entre los científicos
+de datos: el aprendizaje de máquinas. Es poderoso ya que combina métodos estadísticos
+bien establecidos con versatilidad computacional. Pero como dice el &#39;principio de Peter
+Parker&#39;, &#39;un gran poder conlleva una gran responsabilidad&#39;. El libro de texto de Biecek
+proporciona un tutorial conciso sobre cómo dominar el poder del aprendizaje de máquinas
+de manera responsable. Este libro de texto debe ser leído por cualquiera que se atreva a
+aprovechar el poder del aprendizaje automático.
+```
+
+
