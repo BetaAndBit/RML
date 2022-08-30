@@ -10,6 +10,7 @@ Model development is a responsible and challenging task but also an exciting adv
 
 * Free flipbook: https://betaandbit.github.io/RML/
 * Buy pdf version at LeanPub: https://leanpub.com/RML
+* Buy printed paper version at LuLu: https://www.lulu.com/shop/anna-kozak-and-przemys%C5%82aw-biecek-and-aleksander-zawada/the-hitchhikers-guide-to-responsible-machine-learning/paperback/product-7nmmmk.html
 * Reproducible code snippets: [html](https://htmlpreview.github.io/?https://github.com/BetaAndBit/RML/blob/main/data/modelsXAI.html)
 * Reproducible snippets: [Rmd](data/modelsXAI.Rmd)
 * Data: [covid_spring.csv](data/covid_spring.csv)
