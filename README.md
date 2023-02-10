@@ -22,6 +22,8 @@ Please, note that these are artificial datasets generated to mimic relations pre
 
 * Polish: *Wprowadzenie do Modelowania Predykcyjnego* [GitHub](https://github.com/BetaAndBit/MiniML), [flipbook](https://betaandbit.github.io/MiniML/)
 * Spanish: *La Guía del Viajero al Aprendizaje Automático Responsable* [GitHub](https://github.com/BetaAndBit/RML_ES), [flipbook](https://betaandbit.github.io/RML_ES/)
+* German: *Per Anhalter durch die Galaxis des verantwortungsvollen maschinellen Lernens* [flipbook](https://betaandbit.github.io/RML_DE/), [paperback](https://www.amazon.de/-/en/Przemyslaw-Biecek/dp/8365291185/)
+* Turkish: *Sorumlu Makine Öğrenmesi Rehberi* [GitHub](https://github.com/BetaAndBit/RML_TR), [flipbook](https://betaandbit.github.io/RML_TR/)
 * Vietnamese: *4.0.1 Cùng xây dựng Model Machine Learning với Bêta và Bít* [GitHub](https://github.com/BetaAndBit/RML_VN), [flipbook](https://betaandbit.github.io/RML_VN/)
 
 ## Intro
